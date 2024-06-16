@@ -71,6 +71,7 @@ class TestCalculate(unittest.TestCase):
         self.assertEqual(2, self.calc.log10(100))
         self.assertEqual(1, self.calc.log10(10))
         self.assertEqual(0, self.calc.log10(1))
+        self.assertEqual(0, self.calc.log10(10))
         self.assertAlmostEqual(1.4, self.calc.log10(25), places=1)
 
     def test_add_method_fails_with_nan_parameter(self):
