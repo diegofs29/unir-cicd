@@ -32,7 +32,7 @@ test-e2e:
 	docker stop e2e-tests || true
 	docker rm --force e2e-tests || true
 	docker run -d --network calc-test-e2e --env PYTHONPATH=/opt/calc --name apiserver --env FLASK_APP=app/api.py -p 5000:5000 -w /opt/calc calculator-app:latest flask run --host=0.0.0.0
-	docker run -d --network calc-test-e2e --name calc-web -p 80:80 calc-web
+	docker run -d --network calc-test-e2e --name calc-web -p 81:80 calc-web
 	docker create --network calc-test-e2e --name e2e-tests cypress/included:4.9.0 --browser chrome || true
 	docker cp ./test/e2e/cypress.json e2e-tests:/cypress.json
 	docker cp ./test/e2e/cypress e2e-tests:/cypress
@@ -44,7 +44,7 @@ test-e2e:
 	docker network rm calc-test-e2e || true
 
 run-web:
-	docker run --rm --volume `pwd`/web:/usr/share/nginx/html  --volume `pwd`/web/constants.local.js:/usr/share/nginx/html/constants.js --name calc-web -p 80:80 nginx
+	docker run --rm --volume `pwd`/web:/usr/share/nginx/html  --volume `pwd`/web/constants.local.js:/usr/share/nginx/html/constants.js --name calc-web -p 81:80 nginx
 
 stop-web:
 	docker stop calc-web
@@ -69,4 +69,4 @@ deploy-stage:
 	docker stop apiserver || true
 	docker stop calc-web || true
 	docker run -d --rm --name apiserver --network-alias apiserver --env PYTHONPATH=/opt/calc --env FLASK_APP=app/api.py -p 5000:5000 -w /opt/calc calculator-app:latest flask run --host=0.0.0.0
-	docker run -d --rm --name calc-web -p 80:80 calc-web
+	docker run -d --rm --name calc-web -p 81:80 calc-web
